@@ -17,33 +17,8 @@ vim.opt.softtabstop = 5
 vim.opt.shiftwidth = 5
 -- Sets the cursor in the middle
 vim.opt.scrolloff = 999
-
+-- Sets the leaders key
+vim.g.mapleader = " "
 vim.opt.wrap = false
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--- Commnet
+vim.opt.virtualedit = "block"
+vim.opt.termguicolors = true

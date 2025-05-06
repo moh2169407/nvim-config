@@ -1,4 +1,5 @@
 -- Bootstrap lazy.nvim
+path = vim.loop.cwd()
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -111,6 +112,53 @@ require("lazy").setup({
                 },
             }
         end},     
+    -- Telescope
+    {"nvim-telescope/telescope.nvim",
+        dependencies = {"BurntSushi/ripgrep", "nvim-lua/plenary.nvim" },
+        config = function()
+            require('telescope').load_extension('fzf')
+            -- Keymaps for telescope
+            vim.keymap.set("n", "<Leader>ff",":cd" .. path .. "<CR>" .. ":Telescope find_files<CR>", {desc = "Telescope find files in cwd" })
+            vim.keymap.set("n", "<Leader>fd", ":cd ~/Downloads<CR> :Telescope find_files<CR>", {desc = "Telescope find files in Downloads"})
+            vim.keymap.set("n", "<Leader>fg", ":Telescope live_grep<CR>", {desc = "Telescope find grep in cwd"})
+            vim.keymap.set("n", "<Leader>b", ":Telescope buffers<CR>", {desc = "Telescope find buffers"})
+            require("telescope").setup({
+                -- Makes the window transparent
+                pickers = {
+                    find_files = {
+                        hidden = true,  -- show hidden files like .gitignore
+                    },
+                    live_grep = {
+                        additional_args = { "--hidden" },  -- grep through hidden files too
+                    },
+                    buffers = {
+                        sort_lastused = true,
+                        ignore_current_buffer = true,
+                    },
+                },
+                defaults = {
+                    mappings = {
+                        i = {["<esc>"] = require("telescope.actions").close}
+                    },
+                }, 
+                extensions = {
+                    fzf = {
+                        fuzzy = true,                    -- false will only do exact matching
+                        override_generic_sorter = true,  -- override the generic sorter
+                        override_file_sorter = true,     -- override the file sorter
+                        case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                        -- the default case_mode is "smart_case"
+                    }
+                }
+            })
+        end
+    },
+    -- A C library to make finding files quicker
+    {"nvim-telescope/telescope-fzf-native.nvim", build = "make"},
+    -- Git Integration
+    {"lewis6991/gitsigns.nvim"}
+
+
 
 
 -- A list of commented out plugins 

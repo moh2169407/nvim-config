@@ -22,3 +22,16 @@ vim.g.mapleader = " "
 vim.opt.wrap = false
 vim.opt.virtualedit = "block"
 vim.opt.termguicolors = true
+
+
+-- Key Maps
+-- Resizes windows
+ vim.keymap.set("n", "<A-Up>", ":resize +2<CR>", {desc = "Increases window length"})
+vim.keymap.set("n", "<A-Down>", ":resize -2<CR>", {desc = "Decreases window length"})
+vim.keymap.set("n", "<A-Left>", ":vertical resize -2<CR>", {desc = "Increases window width"})
+vim.keymap.set("n", "<A-Right>", ":vertical resize +2<CR>", {desc = "Decreases window width"})
+-- Turns off spell check
+vim.keymap.set("n", "<S-N>", ":lua vim.opt.spell = false<CR>");
+-- Moving between Buffers
+vim.keymap.set("n", "<Leader>n", ":bn<CR>", {desc = "Next buffer"})
+vim.keymap.set("n", "<Leader>p", ":bp<CR>", {desc = "Previous buffer"})

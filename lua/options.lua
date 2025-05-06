@@ -13,8 +13,8 @@ vim.opt.splitright = true
 -- Sets tabs as spaces instead
 vim.opt.expandtab = true
 -- Configs tab options
-vim.opt.softtabstop = 5
-vim.opt.shiftwidth = 5
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
 -- Sets the cursor in the middle
 vim.opt.scrolloff = 999
 -- Sets the leaders key

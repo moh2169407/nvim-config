@@ -17,16 +17,108 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
      -- A color scheme
-     "rebelot/kanagawa.nvim",
+     {"rebelot/kanagawa.nvim", 
+        config = function()
+            vim.cmd([[colorscheme kanagawa-dragon]])
+        end},
      -- A status line plugin
-     "nvim-lualine/lualine.nvim",
+     {"nvim-lualine/lualine.nvim",
+          opts = {                      -- options to pass to the plugin
+               options = {                -- specific settings for lualine
+                    theme = "kanagawa"     -- setting the theme for lualine
+               }
+          }
+     },
+     -- A auto-complete brackets plugins
+     {"windwp/nvim-autopairs",
+     event = "InsertEnter",
+     config = true
+     },
+     -- Treesitter
+     {"nvim-treesitter/nvim-treesitter", 
+        dependencies = {"nvim-treesitter/nvim-treesitter-textobjects"},
+        config = function()
+            require ('nvim-treesitter.configs').setup {
+                ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
+                sync_install = false,
+                -- Automatically install missing parsers when entering buffer
+                auto_install = true,
+                highlight = {
+                    enable = true,
+                    -- Disables syntax if the file is too long
+                    disable = function(lang, buf)
+                        local max_filesize = 100 * 1024 -- 100 KB
+                        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+                        if ok and stats and stats.size > max_filesize then
+                            return true
+                        end
+                    end,
+                    additional_vim_regex_highlighting = false,
+                },
+                indent = {
+                    enable = true
+                },
+                incremental_selection = {
+                    enable = true,
+                    keymaps = {
+                        init_selection = "gns", -- go new selections 
+                        node_incremental = "gni", -- go next increment 
+                        scope_incremental = "grc",
+                        node_decremental = "gnd", -- go next decrement
+                    },
+                },
+                textobjects = {
+                    select = {
+                        enable = true,
 
--- A list of commented plugins 
+                        -- Automatically jump forward to textobj, similar to targets.vim
+                        lookahead = true,
+
+                        keymaps = {
+                            -- You can use the capture groups defined in textobjects.scm
+                            ["af"] = "@function.outer",
+                            ["if"] = "@function.inner",
+                            ["ac"] = "@class.outer",
+                            -- You can optionally set descriptions to the mappings (used in the desc parameter of
+                            -- nvim_buf_set_keymap) which plugins like which-key display
+                            ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+                            -- You can also use captures from other query groups like `locals.scm`
+                            ["as"] = { query = "@local.scope", query_group = "locals", desc = "Select language scope" },
+                        },
+                        -- You can choose the select mode (default is charwise 'v')
+                        --
+                        -- Can also be a function which gets passed a table with the keys
+                        -- * query_string: eg '@function.inner'
+                        -- * method: eg 'v' or 'o'
+                        -- and should return the mode ('v', 'V', or '<c-v>') or a table
+                        -- mapping query_strings to modes.
+                        selection_modes = {
+                            ['@parameter.outer'] = 'v', -- charwise
+                            ['@function.outer'] = 'V', -- linewise
+                            ['@class.outer'] = '<c-v>', -- blockwise
+                        },
+                        -- If you set this to `true` (default is `false`) then any textobject is
+                        -- extended to include preceding or succeeding whitespace. Succeeding
+                        -- whitespace has priority in order to act similarly to eg the built-in
+                        -- `ap`.
+                        --
+                        -- Can also be a function which gets passed a table with the keys
+                        -- * query_string: eg '@function.inner'
+                        -- * selection_mode: eg 'v'
+                        -- and should return true or false
+                        include_surrounding_whitespace = true,
+                    },
+                },
+            }
+        end},     
+
+
+-- A list of commented out plugins 
 -- Color schemes
 --[[  "bluz71/vim-moonfly-colors",
-     "Abstract-IDE/Abstract-cs",
+     {"folke/tokyonight.nvim"},
+     {"Abstract-IDE/Abstract-cs"},
      "nyoom-engineering/oxocarbon.nvim",
 --]]
 })
 
-vim.cmd([[colorscheme kanagawa-dragon]])

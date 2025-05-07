@@ -35,3 +35,5 @@ vim.keymap.set("n", "<S-N>", ":lua vim.opt.spell = false<CR>");
 -- Moving between Buffers
 vim.keymap.set("n", "<Leader>n", ":bn<CR>", {desc = "Next buffer"})
 vim.keymap.set("n", "<Leader>p", ":bp<CR>", {desc = "Previous buffer"})
+-- Closing a buffer
+vim.keymap.set("n", "<Leader>q", ":bd<CR>", { desc = "Close current buffer"})

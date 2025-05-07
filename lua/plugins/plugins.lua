@@ -1,5 +1,5 @@
 -- Bootstrap lazy.nvim
-path = vim.loop.cwd()
+local path = vim.loop.cwd()
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -18,8 +18,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
      -- A color scheme
-     {"rebelot/kanagawa.nvim", 
-        config = function()
+     {"rebelot/kanagawa.nvim", config = function()
             vim.cmd([[colorscheme kanagawa-dragon]])
         end},
      -- A status line plugin
@@ -36,7 +35,7 @@ require("lazy").setup({
      config = true
      },
      -- Treesitter
-     {"nvim-treesitter/nvim-treesitter", 
+     {"nvim-treesitter/nvim-treesitter",
         dependencies = {"nvim-treesitter/nvim-treesitter-textobjects"},
         config = function()
             require ('nvim-treesitter.configs').setup {
@@ -111,17 +110,19 @@ require("lazy").setup({
                     },
                 },
             }
-        end},     
+        end},
     -- Telescope
     {"nvim-telescope/telescope.nvim",
         dependencies = {"BurntSushi/ripgrep", "nvim-lua/plenary.nvim" },
         config = function()
             require('telescope').load_extension('fzf')
+            require('telescope').load_extension("file_browser")
             -- Keymaps for telescope
             vim.keymap.set("n", "<Leader>ff",":cd" .. path .. "<CR>" .. ":Telescope find_files<CR>", {desc = "Telescope find files in cwd" })
             vim.keymap.set("n", "<Leader>fd", ":cd ~/Downloads<CR> :Telescope find_files<CR>", {desc = "Telescope find files in Downloads"})
             vim.keymap.set("n", "<Leader>fg", ":Telescope live_grep<CR>", {desc = "Telescope find grep in cwd"})
             vim.keymap.set("n", "<Leader>b", ":Telescope buffers<CR>", {desc = "Telescope find buffers"})
+            vim.keymap.set("n", "<Leader>fb", ":Telescope file_browser<CR>", {desc = "Telescope file browser"})
             require("telescope").setup({
                 -- Makes the window transparent
                 pickers = {
@@ -134,13 +135,16 @@ require("lazy").setup({
                     buffers = {
                         sort_lastused = true,
                         ignore_current_buffer = true,
+                        mapping = {
+                            i = {["<C-d>"] = require("telescope.actions").delete_buffer + require("telescope.actions").move_to_top }
+                        }
                     },
                 },
                 defaults = {
                     mappings = {
                         i = {["<esc>"] = require("telescope.actions").close}
                     },
-                }, 
+                },
                 extensions = {
                     fzf = {
                         fuzzy = true,                    -- false will only do exact matching
@@ -148,18 +152,40 @@ require("lazy").setup({
                         override_file_sorter = true,     -- override the file sorter
                         case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
                         -- the default case_mode is "smart_case"
+                    },
+                    file_browser = {
+                        hikack_netrw = true,
                     }
-                }
+                },
             })
         end
     },
     -- A C library to make finding files quicker
     {"nvim-telescope/telescope-fzf-native.nvim", build = "make"},
+    -- A file explorer built for telescope
+    {"nvim-telescope/telescope-file-browser.nvim"},
     -- Git Integration
-    {"lewis6991/gitsigns.nvim"}
-
-
-
+    {"lewis6991/gitsigns.nvim"},
+    -- A plugin for delimiter, brackets, braces, strings etc
+    {"kylechui/nvim-surround",
+        config = function()
+            require("nvim-surround").setup({})
+        end},
+    -- Global installing the servers
+    {"neovim/nvim-lspconfig",
+        config = function()
+            local lspconfig = require("lspconfig")
+            lspconfig.clangd.setup({})
+            lspconfig.lua_ls.setup({
+                settings = {
+                    Lua = {
+                        diagnostics = { globals = { 'vim' } },  -- stop complaining about global vim
+                    }
+                }})
+            lspconfig.pyright.setup({})
+            lspconfig.jdtls.setup({})
+        end
+    },
 
 -- A list of commented out plugins 
 -- Color schemes

@@ -7,7 +7,7 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.linebreak = true
 -- Sets spelling errors
 vim.opt.spell = true
--- Sets default position for window when opening new files
+-- Sets default position for window when opening new files 
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 -- Sets tabs as spaces instead
@@ -37,3 +37,30 @@ vim.keymap.set("n", "<Leader>n", ":bn<CR>", {desc = "Next buffer"})
 vim.keymap.set("n", "<Leader>p", ":bp<CR>", {desc = "Previous buffer"})
 -- Closing a buffer
 vim.keymap.set("n", "<Leader>q", ":bd<CR>", { desc = "Close current buffer"})
+
+-- Init Diagnostics 
+vim.keymap.set("n", "]e", function()
+  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Next Error" })
+
+vim.keymap.set("n", "[e", function()
+  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Previous Error" })
+vim.keymap.set("n", "<Leader>sd", ":Telescope diagnostics<CR>", {desc = "Opesn the Diagnostic window"})
+vim.keymap.set("n", "<Leader>H", function()
+    if vim.diagnostic.is_enabled() then
+        vim.diagnostic.enable(false)
+    else
+        vim.diagnostic.enable()
+    end
+
+end, {desc = "Toggle Diagnostics"})
+vim.diagnostic.config({
+    virtual_text = true,
+    virtual_lines = {
+        severity = vim.diagnostic.severity.ERROR
+    },
+    underline = true,
+    severity_sort = true,
+    float = true,
+})

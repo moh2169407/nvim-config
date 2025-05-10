@@ -25,8 +25,9 @@ vim.opt.termguicolors = true
 
 
 -- Key Maps
+
 -- Resizes windows
- vim.keymap.set("n", "<A-Up>", ":resize +2<CR>", {desc = "Increases window length"})
+vim.keymap.set("n", "<A-Up>", ":resize +2<CR>", {desc = "Increases window length"})
 vim.keymap.set("n", "<A-Down>", ":resize -2<CR>", {desc = "Decreases window length"})
 vim.keymap.set("n", "<A-Left>", ":vertical resize -2<CR>", {desc = "Increases window width"})
 vim.keymap.set("n", "<A-Right>", ":vertical resize +2<CR>", {desc = "Decreases window width"})
@@ -38,23 +39,26 @@ vim.keymap.set("n", "<Leader>p", ":bp<CR>", {desc = "Previous buffer"})
 -- Closing a buffer
 vim.keymap.set("n", "<Leader>q", ":bd<CR>", { desc = "Close current buffer"})
 
--- Init Diagnostics 
+-- Diagnostics 
+-- Moves to next error
 vim.keymap.set("n", "]e", function()
-  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+    vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
 end, { desc = "Next Error" })
-
+-- Moves to the previous error
 vim.keymap.set("n", "[e", function()
   vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
 end, { desc = "Previous Error" })
+-- Opens a Telescope window with all the error and warnings inside buffer
 vim.keymap.set("n", "<Leader>sd", ":Telescope diagnostics<CR>", {desc = "Opesn the Diagnostic window"})
+-- Toggles diagnostics
 vim.keymap.set("n", "<Leader>H", function()
     if vim.diagnostic.is_enabled() then
         vim.diagnostic.enable(false)
     else
         vim.diagnostic.enable()
     end
-
 end, {desc = "Toggle Diagnostics"})
+-- configures general diagnostics settings
 vim.diagnostic.config({
     virtual_text = true,
     virtual_lines = {

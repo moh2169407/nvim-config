@@ -14,7 +14,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 vim.opt.rtp:prepend(lazypath)
-
+-- Start
 require("lazy").setup({
      -- A color scheme
      {"rebelot/kanagawa.nvim", config = function()

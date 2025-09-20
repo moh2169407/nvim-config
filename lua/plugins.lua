@@ -1,4 +1,4 @@
--- Bootstrap lazy.nvim
+-- Bootstrap lazy.nvimpl
 local path = vim.loop.cwd()
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -18,10 +18,19 @@ vim.opt.rtp:prepend(lazypath)
 -- Start
 require("lazy").setup({
     -- A color scheme
+    {"metalelf0/black-metal-theme-neovim",
+    config = function()
+            vim.cmd([[colorscheme taake]])
+        end},
+    {"AlexvZyl/nordic.nvim",
+        config = function()
+            -- vim.cmd([[colorscheme nordic]])
+        end},
+     {"folke/tokyonight.nvim"},
     {
         "rebelot/kanagawa.nvim",
         config = function()
-            vim.cmd([[colorscheme kanagawa-dragon]])
+            -- vim.cmd([[colorscheme kanagawa-dragon]])
         end
     },
     -- A status line plugin
@@ -29,7 +38,8 @@ require("lazy").setup({
         "nvim-lualine/lualine.nvim",
         opts = {                   -- options to pass to the plugin
             options = {            -- specific settings for lualine
-                theme = "kanagawa" -- setting the theme for lualine
+                -- theme = "kanagawa" -- setting the theme for lualine
+                theme = "auto"
             }
         }
     },
@@ -45,7 +55,7 @@ require("lazy").setup({
         dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
         config = function()
             require('nvim-treesitter.configs').setup {
-                ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
+                ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "yaml" },
                 sync_install = false,
                 -- Automatically install missing parsers when entering buffer
                 auto_install = true,
@@ -133,14 +143,15 @@ require("lazy").setup({
             vim.keymap.set("n", "<Leader>fg", ":Telescope live_grep<CR>", { desc = "Telescope find grep in cwd" })
             vim.keymap.set("n", "<Leader>b", ":Telescope buffers<CR>", { desc = "Telescope find buffers" })
             vim.keymap.set("n", "<Leader>fb", ":Telescope file_browser<CR>", { desc = "Telescope file browser" })
+            vim.keymap.set("n", "gtd", ":Telescope lsp_definitions<CR>", { desc = "Telescope Definitions" })
             require("telescope").setup({
                 -- Makes the window transparent
                 pickers = {
                     find_files = {
-                        hidden = true, -- show hidden files like .gitignore
+                        hidden = false, -- show hidden files like .gitignore
                     },
                     live_grep = {
-                        additional_args = { "--hidden" }, -- grep through hidden files too
+                        --additional_args = { "--hidden" }, -- grep through hidden files too
                     },
                     buffers = {
                         sort_lastused = true,
@@ -151,6 +162,7 @@ require("lazy").setup({
                     },
                 },
                 defaults = {
+                    file_ignore_patterns = {"%.o", "build/*"},
                     mappings = {
                         i = { ["<esc>"] = require("telescope.actions").close }
                     },
@@ -188,7 +200,13 @@ require("lazy").setup({
         "neovim/nvim-lspconfig",
         config = function()
             local lspconfig = require("lspconfig")
-            lspconfig.clangd.setup({})
+            lspconfig.yamlls.setup({})
+            lspconfig.clangd.setup({
+                init_options = {
+                    fallbackFlags = {'--std=c++20'}
+                },
+                 })
+            lspconfig.neocmake.setup({})
             lspconfig.lua_ls.setup({
                 settings = {
                     Lua = {
@@ -200,7 +218,50 @@ require("lazy").setup({
             lspconfig.jdtls.setup({})
         end
     },
-    {}
+    {
+        'saghen/blink.cmp',
+        dependencies = { 'rafamadriz/friendly-snippets' },
+        version = '1.*',
+        opts = {
+            keymap = { preset = 'super-tab' },
+            appearance = {
+                nerd_font_variant = 'mono'
+            },
+            completion = { documentation = { auto_show = true } },
+
+            -- Default list of enabled providers defined so that you can extend it
+            -- elsewhere in your config, without redefining it, due to `opts_extend`
+            sources = {
+                default = { 'lsp', 'path', 'snippets', 'buffer' },
+            },
+
+            -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+            -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+            -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+            --
+            -- See the fuzzy documentation for more information
+            fuzzy = { implementation = "prefer_rust_with_warning" }
+        },
+        opts_extend = { "sources.default" }
+    },
+    {"mfussenegger/nvim-dap"},
+    -- Markdown Plugins
+    {"iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        build = "cd app && yarn install",
+        init = function()
+            vim.g.mkdp_filetypes = { "markdown" }
+        end,
+        ft = { "markdown" },
+        },
+    {"mfussenegger/nvim-lint",
+        config = function()
+            require('lint').try_lint()
+        end
+},
+
+
+
 
     -- A list of commented out plugins
     -- Color schemes
@@ -211,9 +272,9 @@ require("lazy").setup({
 --]]
 })
 -- Format on close
-vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*",
-    callback = function()
-        vim.lsp.buf.format({ async = false })
-    end,
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--     pattern = "*",
+--     callback = function()
+--         vim.lsp.buf.format({ async = false })
+--     end,
+-- })

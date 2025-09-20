@@ -1,2 +1,2 @@
 require("options")
-require("plugins/plugins")
+require("plugins")

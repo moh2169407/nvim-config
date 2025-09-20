@@ -33,7 +33,7 @@ vim.keymap.set("n", "<A-Down>", ":resize -2<CR>", { desc = "Decreases window len
 vim.keymap.set("n", "<A-Left>", ":vertical resize -2<CR>", { desc = "Increases window width" })
 vim.keymap.set("n", "<A-Right>", ":vertical resize +2<CR>", { desc = "Decreases window width" })
 -- Turns off spell check
-vim.keymap.set("n", "<S-N>", ":lua vim.opt.spell = false<CR>");
+--vim.keymap.set("n", "<S-N>", ":lua vim.opt.spell = false<CR>");
 -- Moving between Buffers
 vim.keymap.set("n", "<Leader>n", ":bn<CR>", { desc = "Next buffer" })
 vim.keymap.set("n", "<Leader>p", ":bp<CR>", { desc = "Previous buffer" })
@@ -50,7 +50,9 @@ vim.keymap.set("n", "[e", function()
     vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
 end, { desc = "Previous Error" })
 -- Opens a Telescope window with all the error and warnings inside buffer
-vim.keymap.set("n", "<Leader>sd", ":Telescope diagnostics<CR>", { desc = "Opesn the Diagnostic window" })
+vim.keymap.set("n", "<Leader>sd", function()
+    vim.diagnostic.open_float()
+end, { desc = "Opesn the Diagnostic window" })
 -- Toggles diagnostics
 vim.keymap.set("n", "<Leader>H", function()
     if vim.diagnostic.is_enabled() then
@@ -61,11 +63,18 @@ vim.keymap.set("n", "<Leader>H", function()
 end, { desc = "Toggle Diagnostics" })
 -- configures general diagnostics settings
 vim.diagnostic.config({
-    virtual_text = true,
+    -- virtual_text = true,
     virtual_lines = {
-        severity = vim.diagnostic.severity.ERROR
+        severity = vim.diagnostic.severity.warnings
     },
     underline = true,
     severity_sort = true,
     float = true,
 })
+
+-- vim.keymap.set("n", "gtd",":Telescope lsp_definitions<CR>"
+-- )
+--
+vim.keymap.set("n", "<Leader>r", function()
+    require("runner").run()
+end)

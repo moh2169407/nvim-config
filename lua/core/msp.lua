@@ -1,0 +1,40 @@
+
+
+-- -- -- Diagnostics
+-- -- -- Moves to next error
+-- -- vim.keymap.set("n", "]e", function()
+    -- --     vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+    -- -- end, { desc = "Next Error" })
+    -- -- -- Moves to the previous error
+    -- -- vim.keymap.set("n", "[e", function()
+        -- --     vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+        -- -- end, { desc = "Previous Error" })
+        -- -- -- Opens a Telescope window with all the error and warnings inside buffer
+        -- -- vim.keymap.set("n", "<Leader>sd", function()
+            -- --     vim.diagnostic.open_float()
+            -- -- end, { desc = "Opesn the Diagnostic window" })
+            -- -- -- Toggles diagnostics
+            -- -- vim.keymap.set("n", "<Leader>H", function()
+                -- --     if vim.diagnostic.is_enabled() then
+                -- --         vim.diagnostic.enable(false)
+                -- --     else
+                -- --         vim.diagnostic.enable()
+                -- --     end
+                -- -- end, { desc = "Toggle Diagnostics" })
+                -- -- -- configures general diagnostics settings
+                -- -- vim.diagnostic.config({
+                    -- --     -- virtual_text = true,
+                    -- --     virtual_lines = {
+                        -- --         severity = vim.diagnostic.severity.warnings
+                        -- --     },
+                        -- --     underline = true,
+                        -- --     severity_sort = true,
+                        -- --     float = true,
+                        -- -- })
+                        -- --
+                        -- -- -- vim.keymap.set("n", "gtd",":Telescope lsp_definitions<CR>"
+                        -- -- -- )
+                        -- -- --
+                        -- -- vim.keymap.set("n", "<Leader>r", function()
+                            -- --     require("runner").run()
+                            -- -- end)

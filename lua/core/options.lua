@@ -27,18 +27,18 @@ local options =  {
     smartindent = true,
     title = true,
     undofile = true,
-    wrap = true,
+    -- wrap = true,
     virtualedit = "block",
     cinkeys = {"break"},
     completeopt = "menuone,noselect,popup",
     winborder = "rounded",
+    mouse = "",
 }
 for k, v in pairs(options) do
     opt[k] = v
 end
 
 vim.g.chistory = 25
-vim.g.mouse = ""
 -- vim.o.ruler = false
 
 

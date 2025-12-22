@@ -59,9 +59,10 @@ require("telescope").setup{
         -- A list of Patterns that won't be displayed
         file_ignore_patterns = {
             "*.o",
-            "DS_STORE",
             ".git",
             "build/*",
+            ".cache",
+            ".DS_Store"
         }
     },
     -- Configurations for pickers

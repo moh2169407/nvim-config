@@ -1,0 +1,8 @@
+[] Snippet Support for blink and custom Snippet
+[] Terminal Plugin:
+[] Might look it https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-jump2d.md
+[] https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-sessions.md
+[] https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-surround.md
+[] https://github.com/chomosuke/term-edit.nvim/pulls or https://github.com/xb-bx/editable-term.nvim
+
+

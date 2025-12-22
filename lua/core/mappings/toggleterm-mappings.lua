@@ -5,6 +5,10 @@ local set = vim.keymap.set
 -- Going to normal mode in terminal
 set("t", "<Esc>" ,[[<C-\><C-n>]], {desc = "Going to normal mode in terminal"} )
 
+-- Close all open terminals if pressed outside a terminal 
+-- otherwise closes current
+-- it pressed with no open windows, then toggle a new one
+
 set("n", "<leader>tt", function ()
     local win_num = vim.fn.win_getid()
     local found = false
@@ -30,14 +34,15 @@ set("n", "<leader>tt", function ()
     else
         vim.cmd.ToggleTerm()
     end
-end )
+end, {desc = "Toggle Windows"})
 
 
-set("n", "<leader>tf", "<Esc>:ToggleTerm direction=float<CR>")
-set("n", "<leader>tv", function ()
-    local size = vim.api.nvim_win_get_width(0)
-    local new_size = 0.40 * size
-    vim.cmd.ToggleTerm(":ToggleTerm size=" .. new_size .. "direction=vertical<CR>")
-end)
-set("n", "<leader>ts", "<Esc>:ToggleTerm size=10 direction=horizontal<CR>")
+-- Opens a floating window
+set("n", "<leader>tf", "<Esc>:ToggleTerm direction=float<CR>", {desc = "Opens a floating window"})
+
+set("n", "<leader>tv", "<Esc>:TermNew size=80 direction=vertical<CR>", {desc = "Opens a vertical split"})
+
+-- Opens a horizontal split
+set("n", "<leader>ts", "<Esc>:ToggleTerm size=10 direction=horizontal<CR>", {desc = "Opens a horizontal split"})
+
 

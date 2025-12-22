@@ -4,8 +4,10 @@ require("toggleterm").setup({
     hide_numbers = false,
     insert_mappings = false,
     terminal_mappings = false,
+    float_opts = {
+        border = "curved"
+    }
 })
 
 
 
--- :tnoremap <Esc> <C-\><C-n>

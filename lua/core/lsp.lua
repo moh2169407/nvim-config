@@ -2,6 +2,7 @@ vim.lsp.enable("clangd")
 vim.lsp.enable("lua_ls")
 vim.lsp.enable("racket_langserver")
 vim.lsp.enable("pyright")
+vim.lsp.enable("jdtls")
 
 vim.lsp.config("*", {
     capabilities = require('blink.cmp').get_lsp_capabilities()
